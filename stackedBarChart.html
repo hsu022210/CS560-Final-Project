@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<style>
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+#main {
+  width: 960px;
+}
+.axis .domain {
+  display: none;
+}
+</style>
+<div id="main">
+<svg width="960" height="500"></svg>
+</div>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+// create the svg
+var svg = d3.select("svg"),
+    margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// set x scale
+var x = d3.scaleBand()
+    .rangeRound([0, width])
+    .paddingInner(0.05)
+    .align(0.1);
+
+// set y scale
+var y = d3.scaleLinear()
+    .rangeRound([height, 0]);
+
+// set the colors
+var z = d3.scaleOrdinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+//stackedData.csv
+//state_crime.csv
+// load the csv and create the chart
+d3.csv("state_crime.csv", function(d, i, columns) {
+
+  for (i = 0, t = 0; i < columns.length; i++){ 
+   
+      // if(columns[i] === "Rates.Property.All" || columns[i] === "Rates.Violent.All"){
+      if(columns[i] !== "State"){
+
+      // Rates.Property.Burglary,Rates.Property.Larceny,Rates.Property.Motor,Rates.Violent.Assault,Rates.Violent.Murder,Rates.Violent.Rape,Rates.Violent.Robbery
+      // console.log(d[columns[i]]);
+      t += d[columns[i]] = +d[columns[i]];
+
+    }
+      // console.log(Object.keys(columns));
+    // console.log("d[columns[i]]: " + d[columns[i]]);
+  }
+  // console.log("t: " + t);
+  d.total = t;
+  // console.log(d);
+  return d;
+  
+  // t.
+}, function(error, data) {
+  if (error) throw error;
+  // console.log(data);
+    var groupedData = d3.nest()
+                    .key(function(d){  return (+d.Year);})
+                    .rollup(function(d){
+                          return {
+
+                            total: 0,
+
+                            propertyAll: d3.sum(d, function(g){return g['Rates.Property.All'];}),
+
+                            violentAll: d3.sum(d, function(g){return g['Rates.Violent.All'];})                           
+                          };
+                    }).entries(data);
+                   // console.log(data.entries());
+// Rates.Property.Burglary,Rates.Property.Larceny,Rates.Property.Motor,Rates.Violent.Assault,Rates.Violent.Murder,Rates.Violent.Rape,Rates.Violent.Robbery
+
+    data = d3.nest()
+                    .key(function(d){  return (+d.Year);})
+                    .rollup(function(d){
+                          return {
+
+                            total: d3.sum(d, function(g){
+                              return g['Rates.Property.Burglary'] 
+                              + g['Rates.Property.Larceny']
+                              + g['Rates.Property.Motor']
+                              + g['Rates.Violent.Assault']
+                              + g['Rates.Violent.Murder']
+                              + g['Rates.Violent.Rape']
+                              + g['Rates.Violent.Robbery'];}),
+
+                            propertyBurglary: d3.sum(d, function(g){return g['Rates.Property.Burglary'];}),
+
+                            propertyLarceny: d3.sum(d, function(g){return g['Rates.Property.Larceny'];}),
+
+                            propertyMotor: d3.sum(d, function(g){return g['Rates.Property.Motor'];}),
+
+                            violentAssault: d3.sum(d, function(g){return g['Rates.Violent.Assault'];}),
+
+                            violentMurder: d3.sum(d, function(g){return g['Rates.Violent.Murder'];}),
+
+                            violentRape: d3.sum(d, function(g){return g['Rates.Violent.Rape'];}),
+
+                            violentRobbery: d3.sum(d, function(g){return g['Rates.Violent.Robbery'];})
+
+
+                          };
+                    }).entries(data);
+ 
+
+
+     
+  // console.log(groupedData.get(1960)["propertyAll"]);
+  // console.log(groupedData);
+  // console.log(JSON.stringify(groupedData));
+
+  // var keyProperty = groupedData.columns.slice(1,2);
+  // var keyViolent = groupedData.columns.slice(5,6);
+  // var keys = keyProperty.concat(keyViolent);
+
+  // var keyProperty = data.columns.slice(1,2);
+  // var keyViolent = data.columns.slice(5,6);
+  // var keys = keyProperty.concat(keyViolent);
+  console.log();
+
+  // var keys = data.columns.slice(1);
+
+     // var keys = d3.keys(data[0]);
+     // console.log("keys: "+keys);
+
+
+//      var students = [{
+//                         name: 'Nick',
+//                         achievements: 158,
+//                         points: 14730
+//                     }, {
+//                         name: 'Jordan',
+//                         achievements: '175',
+//                         points: '16375'
+//                     }, {
+//                         name: 'Ramon',
+//                         achievements: '55',
+//                         points: '2025'
+//                     }];
+
+// var nameArray = students.map(function (el) { return el.name; });
+// document.getElementById('out').innerHTML = JSON.stringify(nameArray, null, 4);
+
+// var keys = data.map(function(el){return el.key;});
+//   var = ele{};
+//   ele.shit = "new";
+//   data.push(ele);
+
+ data.forEach(function(d) {
+    d.year = d.key;
+    delete d.key;
+    // d.propertyAll = +d.value.propertyAll;
+    d.propertyBurglary = +d.value.propertyBurglary;
+    d.propertyLarceny = +d.value.propertyLarceny;
+    d.propertyMotor = +d.value.propertyMotor;
+    d.violentAssault = +d.value.violentAssault;
+    d.violentMurder = +d.value.violentMurder;
+    d.violentRape = +d.value.violentRape;
+    d.violentRobbery = +d.value.violentRobbery;
+    // d.violentAll = +d.value.violentAll;
+    d.total = +d.value.total;
+    delete d.value;
+
+   // console.log(d.value.total);
+
+   
+   // d.key = d.year;
+
+  });
+  var columns = ["year", "propertyBurglary", "propertyLarceny", "propertyMotor","violentAssault","violentMurder", "violentRape","violentRobbery"];
+  data.columns = columns;
+
+  // console.log(columns);
+  console.log(data);
+// var keys = data.map(function(d){return d.year});
+var keys = data.columns.slice(1);
+console.log(keys);
+// console.log(d3.stack().keys(keys)(data));
+  // console.log(data[0].value.total);
+  // var totalsArray = data.map(function(el){return el.});
+  x.domain(data.map(function(d) { return d.year; }));
+  y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
+  z.domain(keys);
+  console.log("this: "+d3.stack().keys(keys)(data));
+  g.append("g")
+    .selectAll("g")
+    .data(d3.stack().keys(keys)(data))
+    .enter().append("g")
+      .attr("fill", function(d) { return z(d.key); })
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("x", function(d) { return x(d.data.year); })
+      .attr("y", function(d) {  return y(d[1]); })
+      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+      .attr("width", x.bandwidth())
+    .on("mouseover", function() { tooltip.style("display", null); })
+    .on("mouseout", function() { tooltip.style("display", "none"); })
+    .on("mousemove", function(d) {
+      // console.log(d);
+      var xPosition = d3.mouse(this)[0] - 5;
+      var yPosition = d3.mouse(this)[1] - 5;
+      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+      tooltip.select("text").text(d[1]-d[0]);
+    });
+
+  g.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  g.append("g")
+      .attr("class", "axis")
+      .call(d3.axisLeft(y).ticks(null, "s"))
+    .append("text")
+      .attr("x", 2)
+      .attr("y", y(y.ticks().pop()) + 0.5)
+      .attr("dy", "0.32em")
+      .attr("fill", "#000")
+      .attr("font-weight", "bold")
+      .attr("text-anchor", "start");
+
+  var legend = g.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", width - 19)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", z);
+
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9.5)
+      .attr("dy", "0.32em")
+      .text(function(d) { return d; });
+});
+
+  // Prep the tooltip bits, initial display is hidden
+  var tooltip = svg.append("g")
+    .attr("class", "tooltip")
+    .style("display", "none");
+      
+  tooltip.append("rect")
+    .attr("width", 60)
+    .attr("height", 20)
+    .attr("fill", "white")
+    .style("opacity", 0.5);
+
+  tooltip.append("text")
+    .attr("x", 30)
+    .attr("dy", "1.2em")
+    .style("text-anchor", "middle")
+    .attr("font-size", "12px")
+    .attr("font-weight", "bold");
+
+</script>
