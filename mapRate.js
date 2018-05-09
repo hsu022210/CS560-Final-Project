@@ -241,7 +241,7 @@ function mainMap() {
                 svg.selectAll("path")
                     .data(json.features)
                     .transition()
-                    .duration(500)
+                    .duration(300)
                     .style("fill", function(d) {
                         //Get data value
                         var value = d.properties.value;
