@@ -62,7 +62,7 @@ function drawBar(chartIdName, dataSet, stateName){
     .format('{%Value}');
 
   // set yAxis labels formatter
-  chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+  chart.yAxis().labels().format('{%Value}{groupsSeparator:}');
 
   // set titles for axises
   chart.xAxis().title(xAxisTitle);

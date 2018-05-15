@@ -71,7 +71,7 @@ function mainMap() {
     let crime_type = document.currentScript.getAttribute('crime_type');
     let defaultYear = document.currentScript.getAttribute('defaultYear');
     let allYears = "-1";
-    let margin = {top: 10, right: 0, bottom: 0, left: 10};
+    let margin = {top: 20, right: 50, bottom: 0, left: 0};
     let w = $("#containerMap").width() - margin.left - margin.right;
     let h = $("#containerMap").height() - margin.top - margin.bottom;
     let fileName = "state_crime.csv";
@@ -80,6 +80,7 @@ function mainMap() {
     let cityCircleSize = [5, 25];
     let plotTitleFontStyle = "22px sans-serif";
     let plotSubTitleFontStyle = "14px sans-serif";
+    let legendFontStyle = "12px sans-serif";
 
     var projection = d3.geoAlbersUsa().translate([w/2, h/2]).scale([800]);
 
@@ -105,10 +106,10 @@ function mainMap() {
     //Create SVG element
     var svg = d3.select("#containerMap")
                 .append("svg")
-                // .attr("width", w + margin.left + margin.right)
-                .attr("width", w)
-                // .attr("height", h + margin.top + margin.bottom)
-                .attr("height", h)
+                .attr("width", w + margin.left + margin.right)
+                // .attr("width", w)
+                .attr("height", h + margin.top + margin.bottom)
+                // .attr("height", h)
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                 .attr("id", "svg_map");
 
@@ -117,6 +118,9 @@ function mainMap() {
         if (error) throw error;
         let dataInDict = dataPreprocessingMap(data, crime_type, defaultYear);
         let dataInDictForAllYears = dataPreprocessingMap(data, crime_type, allYears);
+
+        let minValData = d3.min(dataInDictForAllYears, function(d) { return d.value; });
+        let maxValData = d3.max(dataInDictForAllYears, function(d) { return d.value; });
 
         //Set input domain for color scale
         color.domain([
@@ -210,6 +214,37 @@ function mainMap() {
             });
         }
         // end of update map
+
+        let legend_labels = [];
+
+        legendColorNum = 9;
+
+        for (let i = 1; i <= legendColorNum; i++) {
+            let legendValUnit = minValData + ((maxValData - minValData)/legendColorNum*i);
+            legend_labels.push(legendValUnit.toFixed(0));
+        }
+
+        let legend = svg.selectAll("g.legend")
+        .data(legend_labels)
+        .enter().append("g")
+        .attr("class", "legend");
+
+        var ls_w = 20, ls_h = 20;
+
+        legend.append("rect")
+        .attr("x", w-35)
+        .attr("y", function(d, i){ return h - (i*ls_h) - 2*ls_h;})
+        .attr("width", ls_w)
+        .attr("height", ls_h)
+        .style("fill", function(d, i) { return color(d); })
+        .style("opacity", 0.8);
+
+        legend.append("text")
+        .style("font", legendFontStyle)
+        .attr("x", w)
+        .attr("y", function(d, i){ return h - (i*ls_h) - ls_h - 4;})
+        .text(function(d, i){ return legend_labels[i].toString() + "+"; });
+
     });
 }
 
