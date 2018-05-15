@@ -47,7 +47,6 @@ function readDataFromCsv(data, dataColArr, state, nationalName) {
 }
 
 function drawLineChart(id_name, dataDict, dataColArr, stateName) {
-    // let chartTitle = "Trend of Average Crime Rate in " + stateName + " in Years";
     let chartTitle = "Crime Trend in " + stateName;
     let yAxisTitle = "# of Reported Offenses per 100,000 Population";
 
@@ -117,7 +116,6 @@ function drawLineChart(id_name, dataDict, dataColArr, stateName) {
     .padding([0, 0, 10, 0]);
 
     // set container id for the chart
-    // chart.container('container');
     chart.container(id_name);
     // initiate chart drawing
     chart.draw();
@@ -146,29 +144,6 @@ function getData(dataDict) {
     // ['1989', 9.2, 11.8, 6.5, 18.9]
     // ]
 }
-
-// function addState(stateSet, dataColArr) {
-//     let stateArr = Array.from(stateSet);
-//     let stateName = null;
-//     let htmlStr = null;
-//
-//     for (let i = 0; i < stateArr.length; i++) {
-//         stateName = stateArr[i];
-//         htmlStr = `<a class="dropdown-item" href="#">${stateName}</a>`;
-//         $( ".states_dropdown" ).append(htmlStr);
-//     }
-//
-    // $('.states_dropdown a').on('click', function(){
-    //   // $('#datebox').val($(this).text());
-    //   $( "#container" ).empty();
-    //   main($(this).text());
-    //   // let dataDict = readDataFromCsv(dataColArr, $(this).text());
-    //   // anychart.onDocumentLoad(function() {
-    //   //     drawLineChart(dataDict, dataColArr);
-    //   // });
-    //   // drawLineChart(dataDict, dataColArr);
-    // });
-// }
 
 function getStateNames(data) {
     let stateSet = new Set();

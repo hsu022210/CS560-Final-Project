@@ -37,11 +37,51 @@ function drawPie(chartIdName, dataSet, stateName) {
   chart.draw();
 };
 
+function drawBar(chartIdName, dataSet, stateName){
+    let chart = anychart.bar();
+    let chartTitle = "Crime Types in " + stateName;
+    let xAxisTitle = "# of Reported Offenses per 100,000 Population";
+    let yAxisTitle = "Crime Types";
 
-function updatePie(chartIdName, anyChartDataSet, stateName){
+  chart.animation(true);
+
+  chart.padding([10, 40, 5, 20]);
+
+  chart.title(chartTitle);
+
+  // create bar series with passed data
+  var series = chart.bar(dataSet);
+
+  // set tooltip settings
+  series.tooltip()
+    .position('right')
+    .anchor('left-center')
+    .offsetX(5)
+    .offsetY(0)
+    .titleFormat('{%X}')
+    .format('{%Value}');
+
+  // set yAxis labels formatter
+  chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+
+  // set titles for axises
+  chart.xAxis().title(xAxisTitle);
+  chart.yAxis().title(yAxisTitle);
+  chart.interactivity().hoverMode('by-x');
+  chart.tooltip().positionMode('point');
+  // set scale minimum
+  chart.yScale().minimum(0);
+
+  // set container id for the chart
+  chart.container(chartIdName);
+  // initiate chart drawing
+  chart.draw();
+}
+
+function updateBar(chartIdName, anyChartDataSet, stateName){
     $("#"+chartIdName).empty();
-    // let anyChartDataSet = dataPreprocessingPie(data, crime_type, stateName, nationalName, yearStr);
-    drawPie(chartIdName, anyChartDataSet, stateName);
+    // let anyChartDataSet = dataPreprocessingBar(data, crime_type, stateName, nationalName, yearStr);
+    drawBar(chartIdName, anyChartDataSet, stateName);
 }
 
 function updateValueLabels(anyChartDataSet, stateName){
@@ -53,46 +93,46 @@ function updateValueLabels(anyChartDataSet, stateName){
     $("#" + "offenses_label").text(sum.toFixed(1));
 }
 
-function mainPie() {
+function mainBar() {
     let crime_type = document.currentScript.getAttribute('crime_type');
     let defaultYear = document.currentScript.getAttribute('defaultYear');
     let fileName = "state_crime.csv";
     let nationalName = "United States";
-    let chartIdName = "containerPie";
+    let chartIdName = "containerBar";
 
     d3.csv(fileName, function(error, data) {
         if (error) throw error;
-        let anyChartDataSet = dataPreprocessingPie(data, crime_type, nationalName, nationalName, defaultYear);
+        let anyChartDataSet = dataPreprocessingBar(data, crime_type, nationalName, nationalName, defaultYear);
 
         anychart.onDocumentLoad(function() {
 
             let stateName = null;
             let yearStr = null;
 
-            drawPie(chartIdName, anyChartDataSet, nationalName);
+            drawBar(chartIdName, anyChartDataSet, nationalName);
             updateValueLabels(anyChartDataSet, nationalName);
 
             $('#svg_map path').on('click', function(){
                 yearStr = $( "#slider" ).val();
                 let state_id_name = $(this).attr("id");
                 stateName = state_id_name.split("_")[1];
-                anyChartDataSet = dataPreprocessingPie(data, crime_type, stateName, nationalName, yearStr);
-                updatePie(chartIdName, anyChartDataSet, stateName);
+                anyChartDataSet = dataPreprocessingBar(data, crime_type, stateName, nationalName, yearStr);
+                updateBar(chartIdName, anyChartDataSet, stateName);
                 updateValueLabels(anyChartDataSet, stateName);
-                // updatePie(chartIdName, data, crime_type, nationalName, stateName, yearStr);
+                // updateBar(chartIdName, data, crime_type, nationalName, stateName, yearStr);
             });
 
             $('#slider').on("input", function() {
                 yearStr = $(this).val();
                 if (stateName == null){
-                    anyChartDataSet = dataPreprocessingPie(data, crime_type, nationalName, nationalName, yearStr);
-                    // updatePie(chartIdName, data, crime_type, nationalName, nationalName, yearStr);
-                    updatePie(chartIdName, anyChartDataSet, nationalName);
+                    anyChartDataSet = dataPreprocessingBar(data, crime_type, nationalName, nationalName, yearStr);
+                    // updateBar(chartIdName, data, crime_type, nationalName, nationalName, yearStr);
+                    updateBar(chartIdName, anyChartDataSet, nationalName);
                     updateValueLabels(anyChartDataSet, nationalName);
                 }else{
-                    anyChartDataSet = dataPreprocessingPie(data, crime_type, stateName, nationalName, yearStr);
-                    // updatePie(chartIdName, data, crime_type, nationalName, stateName, yearStr);
-                    updatePie(chartIdName, anyChartDataSet, stateName);
+                    anyChartDataSet = dataPreprocessingBar(data, crime_type, stateName, nationalName, yearStr);
+                    // updateBar(chartIdName, data, crime_type, nationalName, stateName, yearStr);
+                    updateBar(chartIdName, anyChartDataSet, stateName);
                     updateValueLabels(anyChartDataSet, stateName);
                 }
             });
@@ -101,7 +141,7 @@ function mainPie() {
     });
 }
 
-function dataPreprocessingPie(data, crime_type, state, nationalName, yearStr) {
+function dataPreprocessingBar(data, crime_type, state, nationalName, yearStr) {
     let dataDict = {};
     let dataColArr = null;
 
@@ -164,4 +204,4 @@ function dataPreprocessingPie(data, crime_type, state, nationalName, yearStr) {
     return resultArr;
 }
 
-mainPie();
+mainBar();

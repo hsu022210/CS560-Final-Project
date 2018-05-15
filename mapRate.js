@@ -65,13 +65,6 @@ function addValueToJson(dataInDict, json) {
     return json;
 }
 
-// var svg = d3.select("body").append("svg")
-//     .attr("width", width + margin.left + margin.right)
-//     .attr("height", height + margin.top + margin.bottom)
-//   .append("g")
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
 
 function mainMap() {
     //Width and height
@@ -171,44 +164,6 @@ function mainMap() {
                 .attr("transform", "translate("+ (w/4*3) +","+(margin.top + 10)+")")
                 .text(crime_type);
 
-            // svg.append("text")
-            //     .style("font", plotSubTitleFontStyle)
-            //     .attr("text-anchor", "middle")
-            //     .attr("transform", "translate("+ (w/2) +","+(margin.top + 3)+")")
-            //     .text("# of Reported Offenses per 100,000 Population");
-
-            //    //Load in cities data
-            // d3.csv("us-cities.csv", function(data) {
-            //
-            //     circleScale.domain([
-            //         d3.min(data, function(d) { return Math.sqrt(d.population); }),
-            //         d3.max(data, function(d) { return Math.sqrt(d.population); })
-            //     ])
-            //
-            // 	svg.selectAll("circle")
-            // 	   .data(data)
-            // 	   .enter()
-            // 	   .append("circle")
-            // 	   .attr("cx", function(d) {
-            // 		   return projection([d.lon, d.lat])[0];
-            // 	   })
-            // 	   .attr("cy", function(d) {
-            // 		   return projection([d.lon, d.lat])[1];
-            // 	   })
-            //        .attr("r", function(d) {
-            // 		   return circleScale(Math.sqrt(d.population));
-            // 	   })
-            // 	   .style("fill", "#fc8d59")
-            // 	   .style("stroke", "gray")
-            // 	   .style("stroke-width", 0.25)
-            // 	   .style("opacity", 0.75)
-            // 	   .append("title")			//Simple tooltip
-            // 	   .text(function(d) {
-            // 			return d.place + ": Pop. " + formatAsThousands(d.population);
-            // 	   });
-            //
-            // });
-
         });
         // // Initial starting radius of the circle
         updateMap(defaultYear);
@@ -225,12 +180,6 @@ function mainMap() {
             d3.select("#slider").property("value", +yearStr);
 
             dataInDict = dataPreprocessingMap(data, crime_type, yearStr);
-
-            //Set input domain for color scale
-            // color.domain([
-            //     d3.min(dataInDict, function(d) { return d.value; }),
-            //     d3.max(dataInDict, function(d) { return d.value; })
-            // ]);
 
             //Load in GeoJSON data
             d3.json("us-states.json", function(json) {
