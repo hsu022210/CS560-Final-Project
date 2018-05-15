@@ -215,17 +215,16 @@ function mainMap() {
         }
         // end of update map
 
-        let legend_labels = [];
+        // draw legend
 
-        legendColorNum = 9;
+        let legendVals = [];
 
-        for (let i = 1; i <= legendColorNum; i++) {
-            let legendValUnit = minValData + ((maxValData - minValData)/legendColorNum*i);
-            legend_labels.push(legendValUnit.toFixed(0));
-        }
+        color.range().forEach(function(d){
+        	legendVals.push(color.invertExtent(d));
+        })
 
         let legend = svg.selectAll("g.legend")
-        .data(legend_labels)
+        .data(legendVals)
         .enter().append("g")
         .attr("class", "legend");
 
@@ -236,15 +235,14 @@ function mainMap() {
         .attr("y", function(d, i){ return h - (i*ls_h) - 2*ls_h;})
         .attr("width", ls_w)
         .attr("height", ls_h)
-        .style("fill", function(d, i) { return color(d); })
+        .style("fill", function(d, i) {return color(parseFloat(d[0]+1).toFixed(0)); })
         .style("opacity", 0.8);
 
         legend.append("text")
         .style("font", legendFontStyle)
         .attr("x", w)
         .attr("y", function(d, i){ return h - (i*ls_h) - ls_h - 4;})
-        .text(function(d, i){ return legend_labels[i].toString() + "+"; });
-
+        .text(function(d, i){ return parseFloat(d[0]+1).toFixed(0) + "+"; });
     });
 }
 
