@@ -7,7 +7,7 @@ The project is a visualization dashboard of crime rate in USA.
 ## Generals
 Check out the [website](https://hsu022210.github.io/DataVizFinalProject/).
 
-Brief introduction with our [presentation slides](https://github.com/hsu022210/DataVizFinalProject/blob/master/Presntation%20Slides.pdf).
+Brief introduction with our [presentation slides](https://github.com/hsu022210/DataVizFinalProject/blob/master/Presentation%20Slides.pdf).
 
 For more information on how we made our dashboard and how it works, feel free to take a look at our [process book](https://github.com/hsu022210/DataVizFinalProject/blob/master/Process%20Book.pdf).
 
