@@ -5,7 +5,7 @@ The project is a visualization dashboard of crime rate in USA.
 [Alec Hsu](https://github.com/hsu022210), [Fu Tan](https://github.com/ftan3)
 
 ## Generals
-Check out the [website](https://hsu022210.github.io/DataVizFinalProject/).
+Check out the [website](https://hsu022210.github.io/DataVizFinalProject/) (Firefox Recommended).
 
 Brief introduction with our [presentation slides](https://github.com/hsu022210/DataVizFinalProject/blob/master/Presentation%20Slides.pdf).
 
