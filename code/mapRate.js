@@ -74,7 +74,7 @@ function mainMap() {
     let margin = {top: 20, right: 50, bottom: 0, left: 0};
     let w = $("#containerMap").width() - margin.left - margin.right;
     let h = $("#containerMap").height() - margin.top - margin.bottom;
-    let fileName = "state_crime.csv";
+    let fileName = "data/state_crime.csv";
     let colorOptions = ["#fef0d9","#fdcc8a","#fc8d59","#e34a33","#b30000"];
     // let colorOptions = ["rgb(237,248,233)","rgb(186,228,179)","rgb(116,196,118)","rgb(49,163,84)","rgb(0,109,44)"];
     let cityCircleSize = [5, 25];
@@ -129,7 +129,7 @@ function mainMap() {
         ]);
 
         //Load in GeoJSON data
-        d3.json("us-states.json", function(json) {
+        d3.json("data/us-states.json", function(json) {
 
             json = addValueToJson(dataInDict, json);
 
@@ -186,7 +186,7 @@ function mainMap() {
             dataInDict = dataPreprocessingMap(data, crime_type, yearStr);
 
             //Load in GeoJSON data
-            d3.json("us-states.json", function(json) {
+            d3.json("data/us-states.json", function(json) {
 
                 json = addValueToJson(dataInDict, json);
 

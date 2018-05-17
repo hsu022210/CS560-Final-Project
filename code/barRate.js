@@ -96,7 +96,7 @@ function updateValueLabels(anyChartDataSet, stateName){
 function mainBar() {
     let crime_type = document.currentScript.getAttribute('crime_type');
     let defaultYear = document.currentScript.getAttribute('defaultYear');
-    let fileName = "state_crime.csv";
+    let fileName = "data/state_crime.csv";
     let nationalName = "United States";
     let chartIdName = "containerBar";
 

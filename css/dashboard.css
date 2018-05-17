@@ -128,7 +128,7 @@ footer p {
 }
 
 .main-background{
-    background-image: url("img/prison.jpg");
+    background-image: url("../img/prison.jpg");
     background-size: cover;
     background-position: center center;
 }

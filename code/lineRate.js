@@ -164,7 +164,7 @@ function updateLineChart(lineChartIdName, data, dataColArr, nationalName, $dom){
 
 function mainLine() {
     let crime_type = document.currentScript.getAttribute('crime_type');
-    let fileName = "state_crime.csv";
+    let fileName = "data/state_crime.csv";
     let dataColArr = null;
 
     if (crime_type == "Violent"){
