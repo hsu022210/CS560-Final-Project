@@ -228,7 +228,7 @@ function mainMap() {
         .enter().append("g")
         .attr("class", "legend");
 
-        var ls_w = 20, ls_h = 20;
+        let ls_w = 20, ls_h = 20;
 
         legend.append("rect")
         .attr("x", w-35)
